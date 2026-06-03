@@ -73,6 +73,7 @@ private:
         {
             auto id1 = frame.getComponentId(UIComponent::Text);
             frame.getComponentData(id1).emplace_back(ContentStringType::Error, "答案错误，请重试");
+            line = 1;
             auto id2 = frame.getComponentId(UIComponent::AnsweringBox);
             frame.getComponentData(id2).emplace_back("第 1 行");
             return package;
