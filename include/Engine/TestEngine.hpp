@@ -88,6 +88,17 @@ private:
     {
         ContentFrame frame;
 
+        try
+        {
+            std::filesystem::path p(input);
+        }
+        catch (...)
+        {
+            auto id = frame.getComponentId(UIComponent::FileSelector);
+            frame.getComponentData(id).emplace_back(ContentStringType::Error, "所选文件或目录异常，请重试");
+            return frame;
+        }
+
         if (std::filesystem::is_regular_file(input) && tryLoadFromFile(input))
         {
             m_state = State::Testing;
