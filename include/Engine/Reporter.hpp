@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Base/UI.hpp>
-#include <CUI/Color.hpp>
 #include <Engine/ChoiceQuestion.hpp>
 #include <Engine/EssayQuestion.hpp>
 
