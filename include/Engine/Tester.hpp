@@ -6,8 +6,6 @@
 #include <Engine/EssayQuestion.hpp>
 #include <Engine/Policy.hpp>
 #include <Tool/Platform.hpp>
-#include <format>
-#include <string_view>
 
 namespace mentor
 {
@@ -103,7 +101,7 @@ private:
     ContentFrame handlePreviewPause(std::string_view input)
     {
         m_state = State::Answering;
-        return getQuestionFrame();
+        return getQuestionInitFrame();
     }
 
     ContentFrame handleAnswering(std::string_view input)
@@ -114,7 +112,7 @@ private:
     ContentFrame handleAnsweringPause(std::string_view input)
     {
         m_state = State::Answering;
-        return getQuestionFrame();
+        return getQuestionInitFrame();
     }
 
 private:
@@ -141,7 +139,7 @@ private:
         return frame;
     }
 
-    ContentFrame getQuestionFrame()
+    ContentFrame getQuestionInitFrame()
     {
         auto &q = m_test->questions[m_index];
 
@@ -180,27 +178,29 @@ private:
         switch (q.type)
         {
         case QuestionType::Choice:
-            package = ChoiceQuestion::getEchoPackage(*m_test, q, input);
+            package = ChoiceQuestion::getEchoPackage(*m_test, q, input, m_line_counter);
             break;
         case QuestionType::Essay:
             package = EssayQuestion::getEchoPackage(*m_test, q, input, m_line_counter);
             break;
         }
 
-        auto frame = Policy::actOnQuestionPackage(*m_test, m_index, m_line_counter, package);
+        Policy::actOnQuestionPackage(*m_test, m_index, m_line_counter, package);
+
         if (m_index == m_test->questions.size())
             m_state = State::Finish;
-        return frame;
+        
+        return package.frame;
     }
 
 private:
     /// 初始化测试分数
     void initTestScore()
     {
-        if (m_test->score != 0)
-            autoDistributeScore();
-        else
+        if (m_test->score == 0U)
             autoSummarizeScore();
+        else if (m_test->questions.front().score == 0U)
+            autoDistributeScore();
     }
 
     /// 自动分配每题的分数

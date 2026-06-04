@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Base/ContentFrame.hpp"
-#include "Base/UI.hpp"
 #include <Engine/Tester.hpp>
 #include <Tool/Platform.hpp>
 
@@ -11,15 +9,16 @@ namespace mentor
 class Policy
 {
 public:
-    static ContentFrame actOnQuestionPackage(const Test &test, size_t &current_index, std::uint32_t &line_counter, QuestionPackage &qp)
+    static void actOnQuestionPackage(const Test &test, size_t &current_index, std::uint32_t &line_counter, QuestionPackage &qp)
     {
         if (!qp.has_finish)
-            return qp.frame;
+            return;
 
         if (current_index == test.questions.size() - 1)
         {
             ++current_index;
-            return getFinishFrame();
+            qp.frame = getFinishFrame();
+            return;
         }
 
         line_counter = 1;
@@ -27,35 +26,37 @@ public:
         switch (test.mode)
         {
         case TestMode::Test:
-            return actOnTestQuestionPackage(test, current_index, line_counter, qp);
+            actOnTestQuestionPackage(test, current_index, qp);
+            break;
         case TestMode::Practice:
-            return actOnPracticeQuestionPackage(test, current_index, line_counter, qp);
+            actOnPracticeQuestionPackage(test, current_index, qp);
+            break;
         default:
             unreachable();
         }
     }
 
 private:
-    static ContentFrame actOnTestQuestionPackage(const Test &test, size_t &current_index, std::uint32_t &line_counter, QuestionPackage &qp)
+    static void actOnTestQuestionPackage(const Test &test, size_t &current_index, QuestionPackage &qp)
     {
         ++current_index;
         qp.frame = getInitFrame(test, current_index);
-        return qp.frame;
     }
 
-    static ContentFrame actOnPracticeQuestionPackage(const Test &test, size_t &current_index, std::uint32_t &line_counter, QuestionPackage &qp)
+    static void actOnPracticeQuestionPackage(const Test &test, size_t &current_index, QuestionPackage &qp)
     {
         if (qp.correctness != 1.0)
-            return qp.frame;
- 
+            return;
+
         ++current_index;
         qp.frame = getInitFrame(test, current_index);
-        return qp.frame;
     }
 
+private:
     static ContentFrame getInitFrame(const Test &test, size_t &current_index)
     {
         auto &q = test.questions[current_index];
+
         switch (q.type)
         {
         case QuestionType::Choice:

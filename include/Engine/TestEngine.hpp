@@ -3,6 +3,7 @@
 #include <Base/ContentFrame.hpp>
 #include <Base/Type.hpp>
 #include <Base/UI.hpp>
+#include <Engine/Reporter.hpp>
 #include <Engine/Tester.hpp>
 #include <Tool/ConfigIO.hpp>
 #include <Tool/Platform.hpp>
@@ -11,6 +12,7 @@
 #include <fstream>
 #include <string_view>
 #include <system_error>
+
 
 namespace mentor
 {
@@ -57,6 +59,8 @@ public:
             return handleTesting(input);
         case State::WaitForEnterReport:
             return handleWaitReport(input);
+        case State::Report:
+            return handleReport(input);
         default:
             unreachable();
         }
@@ -178,7 +182,13 @@ private:
 
     ContentFrame handleWaitReport(std::string_view input)
     {
-        return {};
+        m_state = State::Report;
+        return m_reporter.getInit(m_test);
+    }
+
+    ContentFrame handleReport(std::string_view input)
+    {
+        return m_reporter.feedInput(input);
     }
 
 private:
@@ -242,6 +252,7 @@ private:
     std::vector<std::filesystem::path> m_jsons;
     Test m_test;
     Tester m_tester;
+    Reporter m_reporter;
 };
 
 } // namespace mentor

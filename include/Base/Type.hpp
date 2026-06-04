@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Base/ContentFrame.hpp>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -17,14 +18,17 @@ enum class QuestionType : uint32_t
 /// 问题
 struct Question
 {
-    std::vector<std::string> options; ///< 选项
-    std::vector<std::string> answers; ///< 答案
-    std::string stem;                 ///< 题面
-    std::string hint;                 ///< 提示（答题前显示，总是可见）
-    std::string solution;             ///< 题解（答题后显示，练习可见）
-    QuestionType type;                ///< 类型
-    uint32_t id;                      ///< 编号
-    uint32_t score;                   ///< 分数
+    std::string stem;                         ///< 题面
+    std::string hint;                         ///< 提示（答题前显示，总是可见）
+    std::string solution;                     ///< 题解（答题后显示，练习可见）
+    std::vector<std::string> options;         ///< 选项
+    std::vector<std::string> answers;         ///< 答案
+    std::vector<std::string> user_inputs;     ///< 用户输入
+    std::vector<ContentString> diag_messages; ///< 诊断信息
+    QuestionType type;                        ///< 类型
+    uint32_t id;                              ///< 编号
+    uint32_t score;                           ///< 分数
+    uint32_t actual_score;                    ///< 实际分数
 };
 
 /// 测试类型
