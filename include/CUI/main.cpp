@@ -25,7 +25,13 @@ int main()
                 break;
 
             if (frame.action == UIAction::Clear)
+            {
+#ifdef _WIN32
                 std::system("cls");
+#else
+                std::system("clear");
+#endif
+            }
 
             renderer.render(frame);
         }
