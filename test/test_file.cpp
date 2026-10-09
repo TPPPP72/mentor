@@ -3,6 +3,7 @@
 #include <doctest.h>
 
 using namespace mentor;
+using namespace mentor::codec;
 using json = nlohmann::json;
 
 TEST_CASE("testing decoding of TestFile")
@@ -40,7 +41,7 @@ TEST_CASE("testing decoding of TestFile")
     ],
     "score": 50
 })");
-    auto test_file = decodeTestFile(j);
+    auto test_file = decode<file::TestFile>(j);
     auto &info     = test_file->info;
     CHECK(info.name == "test");
     CHECK(info.author == "TPPPP");

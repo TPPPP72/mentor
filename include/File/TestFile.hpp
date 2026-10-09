@@ -3,7 +3,7 @@
 #include "Base/Model.hpp"
 #include <nlohmann/json.hpp>
 
-namespace mentor{
+namespace mentor::file{
 
 struct TestFile
 {

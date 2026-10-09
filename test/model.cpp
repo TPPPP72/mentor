@@ -3,6 +3,7 @@
 #include <doctest.h>
 
 using namespace mentor;
+using namespace mentor::codec;
 using json = nlohmann::json;
 
 TEST_CASE("testing decoding of TestInfo")

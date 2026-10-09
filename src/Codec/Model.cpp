@@ -1,7 +1,7 @@
 #include "Codec/Model.hpp"
 #include "Base/Model.hpp"
 
-namespace mentor
+namespace mentor::codec
 {
 
 std::optional<TestInfo> decodeTestInfo(const nlohmann::json &j)
@@ -50,4 +50,4 @@ std::optional<EssayQuestion> decodeEssayQuestion(const nlohmann::json &j)
     return question;
 }
 
-} // namespace mentor
+} // namespace mentor::codec
