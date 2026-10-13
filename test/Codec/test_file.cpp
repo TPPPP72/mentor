@@ -41,7 +41,7 @@ TEST_CASE("testing decoding of TestFile")
     ],
     "score": 50
 })");
-    auto test_file = decode<file::TestFile>(j);
+    auto test_file = decode<kernel::TestFile>(j);
     auto &info     = test_file->info;
     CHECK(info.name == "test");
     CHECK(info.author == "TPPPP");

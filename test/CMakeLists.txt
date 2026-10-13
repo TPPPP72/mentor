@@ -1,15 +1,7 @@
 include(mentor_test)
 
-message(STATUS "Configuring tests...")
+message(STATUS "[mentor] Configuring tests...")
 
-file(GLOB TEST_SOURCES *.cpp)
-
-foreach(src ${TEST_SOURCES})
-    get_filename_component(name ${src} NAME_WE)
-    mentor_add_test(
-        ${name}
-        SOURCES ${src}
-    )
-endforeach()
+add_subdirectory(Codec)
 
 message(STATUS "[mentor] Tests configuration succeed!")

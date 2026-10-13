@@ -3,7 +3,8 @@
 #include "Base/Model.hpp"
 #include <nlohmann/json.hpp>
 
-namespace mentor::file{
+namespace mentor::kernel
+{
 
 struct TestFile
 {
@@ -11,4 +12,4 @@ struct TestFile
     nlohmann::json::array_t questions;
 };
 
-}
+} // namespace mentor::kernel

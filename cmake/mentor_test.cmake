@@ -18,7 +18,7 @@ function(mentor_add_test target)
 
   add_executable(${target})
   target_sources(${target} PRIVATE ${MENTOR_TEST_SOURCES})
-  target_include_directories(${target} PRIVATE thirdparty)
+  target_include_directories(${target} PRIVATE ${PROJECT_SOURCE_DIR}/test/thirdparty)
   target_link_libraries(${target}
     PRIVATE
       mentor_lib

@@ -1,11 +1,15 @@
 #pragma once
 
+#include "Codec/TestFile.hpp"
+#include "Kernel/File/TestFile.hpp"
 #include <filesystem>
+#include <fstream>
 #include <functional>
 #include <optional>
 #include <vector>
+#include <sstream>
 
-namespace mentor::file
+namespace mentor::kernel
 {
 
 inline std::optional<std::vector<std::filesystem::path>> getDirFiles(const std::filesystem::path &p,
@@ -37,4 +41,21 @@ inline std::optional<std::vector<std::filesystem::path>> getDirFiles(const std::
     return files;
 }
 
-} // namespace mentor
+inline std::optional<std::vector<std::filesystem::path>> getCurrentDirFiles()
+{
+    return getDirFiles(std::filesystem::current_path());
+}
+
+inline std::optional<TestFile> readTestFile(const std::filesystem::path &p)
+{
+    std::ifstream i(p);
+    if (!i.is_open())
+        return std::nullopt;
+
+    std::stringstream ss;
+    ss << i.rdbuf();
+    nlohmann::json j = nlohmann::json::parse(ss);
+    return codec::decode<TestFile>(j);
+}
+
+} // namespace mentor::kernel

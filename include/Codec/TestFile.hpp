@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Codec/Model.hpp"
-#include "File/TestFile.hpp"
+#include "Kernel/File/TestFile.hpp"
 
 namespace mentor::codec
 {
 
-inline std::optional<file::TestFile> decodeTestFile(const nlohmann::json &j)
+inline std::optional<kernel::TestFile> decodeTestFile(const nlohmann::json &j)
 {
     if (!j.contains("questions"))
         return std::nullopt;
@@ -15,17 +15,20 @@ inline std::optional<file::TestFile> decodeTestFile(const nlohmann::json &j)
     if (!ti.has_value())
         return std::nullopt;
 
-    file::TestFile tf;
+    kernel::TestFile tf;
     tf.info      = ti.value();
     tf.questions = j["questions"];
     return tf;
 }
 
 template <typename File>
+concept IsTestFile = std::same_as<File, kernel::TestFile>;
+
+template <typename File>
 std::optional<File> decode(const nlohmann::json &j)
-    requires std::same_as<File, file::TestFile>
+    requires IsTestFile<File>
 {
     return decodeTestFile(j);
 }
 
-} // namespace mentor
+} // namespace mentor::codec
